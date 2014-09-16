@@ -16,6 +16,7 @@ RUN apt-get autoclean -y
 ENV PYTHON_URL https://www.python.org/ftp/python/2.7.8/python-2.7.8.msi
 ENV PYQT4_URL http://downloads.sourceforge.net/project/pyqt/PyQt4/PyQt-4.11.1/PyQt4-4.11.1-gpl-Py2.7-Qt4.8.6-x32.exe?r=http%3A%2F%2Fwww.riverbankcomputing.co.uk%2Fsoftware%2Fpyqt%2Fdownload&ts=1410031650&use_mirror=skylink
 ENV PYWIN32_URL http://downloads.sourceforge.net/project/pywin32/pywin32/Build%20217/pywin32-217.win32-py2.7.exe?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fpywin32%2Ffiles%2Fpywin32%2FBuild%2520217%2F&ts=1410031204&use_mirror=kent
+#ENV PYWIN32_URL http://downloads.sourceforge.net/project/pywin32/pywin32/Build%20219/pywin32-219.win32-py2.7.exe?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fpywin32%2Ffiles%2Fpywin32%2FBuild%2520219%2F&ts=1410890948&use_mirror=superb-dca3
 ENV PYINSTALLER_URL https://pypi.python.org/packages/source/P/PyInstaller/PyInstaller-2.1.zip
 ENV NSIS_URL http://prdownloads.sourceforge.net/nsis/nsis-2.46-setup.exe?download
 
@@ -57,3 +58,13 @@ VOLUME ["/opt/wine-electrum/drive_c/electrum"]
 
 # Pip not needed for releases
 #RUN wget -q -O - https://raw.github.com/pypa/pip/master/contrib/get-pip.py | $PYTHON
+
+#RUN wget -q -O - "http://python-distribute.org/distribute_setup.py" | $PYTHON
+#RUN wine "$PYHOME\\python.exe" -m pip install -U pip
+
+RUN wget -q -O -#RUN wget -q -O - http://peak.telecommunity.com/dist/ez_setup.py  | $PYTHON
+
+
+
+RUN wine "$PYHOME\\Scripts\\easy_install.exe" ecdsa slowaes ltc_scrypt
+
