@@ -1,14 +1,14 @@
 #!/bin/bash -l
 function buildBinary(){
-  docker run -v $(pwd)/source:/opt/wine-electrum/drive_c/electrum/ electrum-winbuild bash -c 'cd /opt/wine-electrum/drive_c/electrum/Electrum-LTC-'$VERSION' && $PYTHON "C:/PyInstaller/pyinstaller.py" -y "C:/electrum/deterministic.spec"'
+  docker run -v $(pwd)/source:/opt/wine-electrum/drive_c/electrum/ electrum-winbuild bash -c 'cd /opt/wine-electrum/drive_c/electrum/Electrum-TPC-'$VERSION' && $PYTHON "C:/PyInstaller/pyinstaller.py" -y "C:/electrum/deterministic.spec"'
   if [[ $? = 0 ]]; then
     echo "Build successful."
   else
     echo "Seems like the build failed. Exiting."
     exit
   fi
-  cp $TARGETFOLDER/dist/electrum.exe $(pwd)/releases/electrum-$VERSION.exe
-  echo "You can find electrum-$VERSION.exe in the releases folder."
+  cp $TARGETFOLDER/dist/electrum.exe $(pwd)/releases/electrum-tpc-$VERSION.exe
+  echo "You can find electrum-tpc-$VERSION.exe in the releases folder."
 
 }
 
@@ -22,24 +22,27 @@ function prepareFile(){
   if [ -e "$TARGETPATH" ]; then
     echo "Version tar already downloaded."
   else
+    echo "use local tar file"
 #    wget https://download.electrum.org/$FILENAME -O $TARGETPATH
 #     wget http://tk.9mmo.com/dl/$FILENAME -O $TARGETPATH
 #     wget http://electrum-ltc.org/download/Electrum-LTC-1.9.8.5.tar.gz -O $TARGETPATH
-      wget http://tk.9mmo.com/dl/electrum-tpc-1.9.8.5.tar.gz -O $TARGETPATH
+#     wget http://tk.9mmo.com/dl/Electrum-TPC-1.9.8.5.tar.gz -O $TARGETPATH
+          #http://tk.9mmo.com/dl/Electrum-TPC-1.9.8.5.tar.gz
   fi
 
   if [ -d "$TARGETFOLDER" ]; then
     echo "Version is already extracted"
   else
-    tar -xvf $TARGETPATH -C $(pwd)/source
+    mkdir $(pwd)/source/Electrum-TPC-$VERSION
+    tar -xvf $TARGETPATH -C $(pwd)/source/Electrum-TPC-$VERSION
   fi
 }
 
 if [[ $# -gt 0 ]]; then
   VERSION=$1
-  FILENAME=Electrum-LTC-$VERSION.tar.gz
+  FILENAME=Electrum-TPC-$VERSION.tar.gz
   TARGETPATH=$(pwd)/source/$FILENAME
-  TARGETFOLDER=$(pwd)/source/Electrum-LTC-$VERSION
+  TARGETFOLDER=$(pwd)/source/Electrum-TPC-$VERSION
   echo "Building Electrum $VERSION from $FILENAME"
 else
   echo "Usage: ./build <version>."
@@ -64,7 +67,10 @@ else
         echo "Using docker at $DOCKERBIN"
 fi
 
+
+
 # Build docker image
+#rm -rf $(pwd)/source/Electrum-TPC-*
 buildImage
 
 # Prepare host file system
