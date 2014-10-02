@@ -1,0 +1,9 @@
+('C:\\electrum\\Electrum-TPC-1.9.8.5\\dist\\electrum.exe',
+ False,
+ False,
+ 'icons/electrum.ico',
+ None,
+ [],
+ None,
+ False,
+ 1412275039L)
